@@ -6,10 +6,34 @@ from rest_framework import status
 from .models import Vehicle, Booking
 from .serializers import VehicleSerializer, BookingSerializer
 
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+
 
 class VehicleListCreateAPIView(APIView):
     serializer_class = VehicleSerializer
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "brand",
+                str,
+                OpenApiParameter.QUERY,
+                description="Filterby vehicle brand",
+            ),
+            OpenApiParameter(
+                "fuel_type",
+                str,
+                OpenApiParameter.QUERY,
+                description="Filter by fuel type (Petrol, Diesel, Electric, Hybrid)",
+            ),
+            OpenApiParameter(
+                "is_available",
+                bool,
+                OpenApiParameter.QUERY,
+                description="Filter by availability (true/false)",
+            ),
+        ]
+    )
     def get(self, request):
         queryset = Vehicle.objects.all()
 
@@ -43,7 +67,7 @@ class VehicleDetailAPIView(APIView):
 
     def get_object(self, id):
         return get_object_or_404(Vehicle, id=id)
- 
+
     def get(self, request, id):
         vehicle = self.get_object(id)
         serializer = VehicleSerializer(vehicle)
@@ -89,5 +113,3 @@ class BookingDetailAPIView(APIView):
         booking = self.get_object(id)
         serializer = BookingSerializer(booking)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
