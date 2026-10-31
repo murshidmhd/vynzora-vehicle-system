@@ -8,6 +8,8 @@ from .serializers import VehicleSerializer, BookingSerializer
 
 
 class VehicleListCreateAPIView(APIView):
+    serializer_class = VehicleSerializer
+
     def get(self, request):
         queryset = Vehicle.objects.all()
 
@@ -37,9 +39,11 @@ class VehicleListCreateAPIView(APIView):
 
 
 class VehicleDetailAPIView(APIView):
+    serializer_class = VehicleSerializer
+
     def get_object(self, id):
         return get_object_or_404(Vehicle, id=id)
-
+ 
     def get(self, request, id):
         vehicle = self.get_object(id)
         serializer = VehicleSerializer(vehicle)
@@ -60,6 +64,8 @@ class VehicleDetailAPIView(APIView):
 
 
 class BookingListCreateAPIView(APIView):
+    serializer_class = BookingSerializer
+
     def get(self, request):
         bookings = Booking.objects.select_related("vehicle").all()
         serializer = BookingSerializer(bookings, many=True)
@@ -74,6 +80,8 @@ class BookingListCreateAPIView(APIView):
 
 
 class BookingDetailAPIView(APIView):
+    serializer_class = BookingSerializer
+
     def get_object(self, id):
         return get_object_or_404(Booking.objects.select_related("vehicle"), id=id)
 
@@ -83,5 +91,3 @@ class BookingDetailAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# Backwards compatibility alias
-BokkingDetailAPIView = BookingDetailAPIView
