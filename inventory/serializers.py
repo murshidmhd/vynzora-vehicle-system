@@ -7,8 +7,7 @@ from .models import Vehicle, Booking
 class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle
-
-        fields = "_all__"
+        fields = "__all__"
 
 
 class BookingSerializer(serializers.ModelSerializer):

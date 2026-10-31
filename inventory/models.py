@@ -29,6 +29,8 @@ class Booking(models.Model):
     vehicle = models.ForeignKey(
         Vehicle, on_delete=models.CASCADE, related_name="bookings"
     )
+    customer_name = models.CharField(max_length=100)
+
     customer_phone = models.CharField(max_length=15)
     start_date = models.DateField()
     end_date = models.DateField()
